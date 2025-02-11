@@ -7,11 +7,31 @@ const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 
+
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
-const heapdump = require('heapdump');
-heapdump.writeSnapshot('./heapdump.heapsnapshot');
+// app.use(cors({
+//   origin: 'https://spotifyclone4frontend123.vercel.app', // Replace with your frontend URL
+// }));
+app.use(cors({
+  origin: 'https://spotifyclone-xi-ten.vercel.app', // Allow frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // If using cookies or tokens
+}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://spotifyclone-xi-ten.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
+
 
 const uri1 = "mongodb+srv://ananthakrishnans0608:ArjunAk1234@spotify1.gqzqg.mongodb.net/music?retryWrites=true&w=majority&appName=spotify1";
 mongoose.connect(uri1)
@@ -90,6 +110,8 @@ app.get('/songs', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
 
 // POST /register
 app.post('/register', async (req, res) => {
