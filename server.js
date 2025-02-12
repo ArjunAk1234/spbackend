@@ -10,8 +10,6 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-const heapdump = require('heapdump');
-heapdump.writeSnapshot('./heapdump.heapsnapshot');
 
 const uri1 = "mongodb+srv://ananthakrishnans0608:ArjunAk1234@spotify1.gqzqg.mongodb.net/music?retryWrites=true&w=majority&appName=spotify1";
 mongoose.connect(uri1)
