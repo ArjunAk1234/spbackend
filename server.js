@@ -9,29 +9,28 @@ require('dotenv').config();
 
 
 const app = express();
-app.use(bodyParser.json({ limit: '5500mb' }));
-app.use(bodyParser.urlencoded({ limit: '5500mb', extended: true }));
-app.use(cors({
-  origin: 'http://localhost:4200', // Replace with your frontend URL
-}));
+app.use(bodyParser.json());
 // app.use(cors({
-//   origin: 'http://localhost:4200', // Allow frontend domain
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true // If using cookies or tokens
+//   origin: '', // Replace with your frontend URL
 // }));
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   res.header('Access-Control-Allow-Credentials', 'true');
+app.use(cors({
+  origin: 'http://localhost:4200', // Allow frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // If using cookies or tokens
+}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
 
-//   if (req.method === 'OPTIONS') {
-//     return res.sendStatus(200);
-//   }
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
   
-//   next();
-// });
+  next();
+});
 
 
 const uri1 = "mongodb+srv://ananthakrishnans0608:ArjunAk1234@spotify1.gqzqg.mongodb.net/music?retryWrites=true&w=majority&appName=spotify1";
