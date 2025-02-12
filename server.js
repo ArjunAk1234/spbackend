@@ -9,7 +9,8 @@ require('dotenv').config();
 
 
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '550mb' }));
+app.use(bodyParser.urlencoded({ limit: '550mb', extended: true }));
 app.use(cors({
   origin: 'http://localhost:4200', // Replace with your frontend URL
 }));
