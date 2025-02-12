@@ -101,12 +101,30 @@ app.post('/upload-song', upload.fields([{ name: 'file', maxCount: 1 }, { name: '
 });
 
 
+// app.get('/songs', async (req, res) => {
+//   try {
+//     const songs = await Music.find(); // Get all songs from the database
+//     res.status(200).json(songs);
+//   } catch (err) {
+//     console.error('Error fetching songs:', err);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
 app.get('/songs', async (req, res) => {
   try {
-    const songs = await Music.find(); // Get all songs from the database
-    res.status(200).json(songs);
+    const song = await Music.find();
+    if (!song || !song.file) {
+      return res.status(404).json({ message: 'Song not found' });
+    }
+
+    res.set('Content-Type', 'audio/mp3');
+    res.set('Content-Disposition', `inline; filename="${song.title}.mp3"`);
+
+    const readableStream = new stream.PassThrough();
+    readableStream.end(song.file);
+    readableStream.pipe(res);
   } catch (err) {
-    console.error('Error fetching songs:', err);
+    console.error('Error fetching song:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
